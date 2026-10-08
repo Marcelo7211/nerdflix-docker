@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nerdflix Filmes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1 id="titulo">Nerdflix Filmes</h1>
+    <p id="subtitulo">Catálogo da loja, servido por containers</p>
+  </header>
+
+  <main>
+    <section id="catalogo">
+      <h2>Catálogo</h2>
+      <p id="status" class="status">Carregando filmes...</p>
+      <ul id="lista-filmes"></ul>
+    </section>
+
+    <section id="cadastro">
+      <h2>Cadastrar filme</h2>
+      <form id="form-filme">
+        <label for="titulo-filme">Título</label>
+        <input id="titulo-filme" name="titulo" type="text" required maxlength="120">
+
+        <label for="ano-filme">Ano</label>
+        <input id="ano-filme" name="ano" type="number" required min="1888" max="2100">
+
+        <button type="submit" id="btn-cadastrar">Cadastrar</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p id="versao">API: verificando...</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
