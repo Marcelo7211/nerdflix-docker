@@ -1,0 +1,7 @@
+.git
+backend
+db
+nginx
+docs
+*.md
+.env

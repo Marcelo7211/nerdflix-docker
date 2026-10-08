@@ -1,0 +1,61 @@
+# Stack para o Docker Swarm (o `docker stack deploy` não constrói imagens: elas vêm do registry local)
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: loja
+      MYSQL_USER: loja
+      MYSQL_PASSWORD: loja123
+    volumes:
+      - loja-dados:/var/lib/mysql
+    configs:
+      - source: init_sql
+        target: /docker-entrypoint-initdb.d/init.sql
+    networks:
+      - loja-rede
+    deploy:
+      replicas: 1
+
+  api:
+    image: localhost:5001/loja-api:1.0
+    environment:
+      DB_HOST: db
+      DB_USER: loja
+      DB_PASSWORD: loja123
+      DB_NAME: loja
+    networks:
+      - loja-rede
+    deploy:
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 5s
+        order: start-first
+      restart_policy:
+        condition: on-failure
+
+  front:
+    image: localhost:5001/loja-front:1.0
+    ports:
+      - "8088:80"
+    configs:
+      - source: nginx_conf
+        target: /etc/nginx/conf.d/default.conf
+    networks:
+      - loja-rede
+    deploy:
+      replicas: 2
+
+configs:
+  nginx_conf:
+    file: ./nginx/default.conf
+  init_sql:
+    file: ./db/init.sql
+
+volumes:
+  loja-dados:
+
+networks:
+  loja-rede:
+    driver: overlay
